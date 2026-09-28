@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAHABAT NENG - Temukan Potensimu. Temukan Jalannya.</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- React 18 & Babel Standalone -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        neng: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            peach: '#fff7ed',
+                            peachBorder: '#ffedd5',
+                            softBg: '#fffafb',
+                            cardBg: '#ffffff',
+                            darkText: '#2d1520',
+                            subText: '#64748b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -5px rgba(225, 29, 72, 0.08)',
+                        'glow': '0 0 20px rgba(251, 113, 133, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fffafb;
+            color: #2d1520;
+            overflow-x: hidden;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff1f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e11d48;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        // Mock data constants for Indramayu Ecosystem
+        const INDRAMAYU_DISTRICTS = [
+            "Indramayu", "Jatibarang", "Karangampel", "Patrol", "Losarang",
+            "Haurgeulis", "Kandanghaur", "Krangkeng", "Sliyeg", "Lohbener",
+            "Widasari", "Sindang", "Arahan", "Cantigi", "Pasekan", "Bangodua"
+        ];
+
+        const INITIAL_GEOMAP_RESOURCES = [
+            {
+                id: 'res-1',
+                title: 'Pelatihan Olahan Mangga & Packaging Modern',
+                category: 'Pelatihan',
+                icon: 'fa-book-open',
+                district: 'Jatibarang',
+                distance: '2.4 km',
+                address: 'Pusat Inovasi UMKM Jatibarang, Indramayu',
+                description: 'Pelatihan pembuatan produk turunan mangga khas Indramayu (dodol, sirup, freeze-dried) lengkap dengan strategi pengemasan tahan lama dan higienis.',
+                prerequisites: 'Perempuan usia 17-30 tahun, berminat di bidang kuliner',
+                contact: '0812-3456-7890 (Mba Rani)',
+                rating: 4.9,
+                reviews: 28,
+                tags: ['Kuliner', 'Packaging', 'UMKM']
+            },
+            {
+                id: 'res-2',
+                title: 'Komunitas Perempuan Berkarya Paoman',
+                category: 'Komunitas',
+                icon: 'fa-users',
+                district: 'Indramayu',
+                distance: '1.2 km',
+                address: 'Sanggar Batik Paoman, Jl. Siliwangi No. 12',
+                description: 'Wadah berkumpul dan berjejaring perempuan muda Indramayu yang fokus membanggakan motif Batik Paoman & kerajinan tangan lokal.',
+                prerequisites: 'Terbuka untuk umum tanpa batasan pengalaman',
+                contact: '0857-1122-3344 (Komunitas Paoman)',
+                rating: 4.8,
+                reviews: 42,
+                tags: ['Batik', 'Kerajinan', 'Komunitas']
+            },
+            {
+                id: 'res-3',
+                title: 'Pendampingan Legalitas Usaha & Halal (NIB & P-IRT)',
+                category: 'Mentor',
+                icon: 'fa-handshake',
+                district: 'Sindang',
+                distance: '3.1 km',
+                address: 'Gedung Koperasi & UMKM Indramayu',
+                description: 'Klinik konsultasi tatap muka gratis untuk pendaftaran NIB, P-IRT, dan Sertifikasi Halal bagi wirausaha perempuan pemula.',
+                prerequisites: 'Memiliki draf produk atau usaha berjalan',
+                contact: '0821-9988-7766 (Ibu Dewi)',
+                rating: 5.0,
+                reviews: 19,
+                tags: ['Legalitas', 'Halal', 'Mentor']
+            },
+            {
+                id: 'res-4',
+                title: 'Pusat Pengolahan Hasil Perikanan Karangampel',
+                category: 'Pusat Produksi',
+                icon: 'fa-industry',
+                district: 'Karangampel',
+                distance: '8.5 km',
+                address: 'Kawasan Pesisir Karangampel Indramayu',
+                description: 'Fasilitas produksi bersama (shared workshop) pengolahan terasi super, kerupuk udang, dan ikan asap skala higienis standar ekspor.',
+                prerequisites: 'Anggota kelompok usaha perempuan lokal',
+                contact: '0813-8877-6655 (Pusat Karangampel)',
+                rating: 4.7,
+                reviews: 15,
+                tags: ['Perikanan', 'Produksi', 'Pesisir']
+            },
+            {
+                id: 'res-5',
+                title: 'Beasiswa Pelatihan Digital Marketing & Content Creator',
+                category: 'Peluang',
+                icon: 'fa-briefcase',
+                district: 'Lohbener',
+                distance: '4.2 km',
+                address: 'Rumah Edukasi Digital Lohbener',
+                description: 'Program intensif 4 minggu mencakup live streaming commerce, fotografi produk HP, serta manajemen TikTok Shop & Shopee.',
+                prerequisites: 'Memiliki Smartphone Android/iOS',
+                contact: '0878-5544-3322 (Tim Digital Sahabat)',
+                rating: 4.9,
+                reviews: 64,
+                tags: ['Digital Marketing', 'Content Creator', 'Beasiswa']
+            },
+            {
+                id: 'res-6',
+                title: 'Rumah Aman & Konsultasi Sebaya Indramayu',
+                category: 'Pendidikan',
+                icon: 'fa-heartPulse',
+                district: 'Indramayu',
+                distance: '1.8 km',
+                address: 'Area Konseling Terpadu, Kota Indramayu',
+                description: 'Layanan ruang privat tanpa stigma untuk diskusi penguatan diri, kesehatan reproduksi, dan pemetaan minat karier perempuan muda.',
+                prerequisites: 'Sifatnya rahasia, ramah & tanpa biaya',
+                contact: '0800-123-NENG (Hotline Bebas Stigma)',
+                rating: 5.0,
+                reviews: 31,
+                tags: ['Safe Space', 'Konseling', 'Kesehatan']
+            }
+        ];
+
+        const INITIAL_MENTORS = [
+            {
+                id: 'm1',
+                name: 'Ayu Rahma, S.E.',
+                role: 'Mentor UMKM & Digital Marketing',
+                rating: '4.9',
+                reviews: 38,
+                district: 'Indramayu',
+                matchPercentage: 94,
+                matchReason: 'Memiliki pengalaman 6+ tahun mendampingi 40+ UMKM kuliner di Indramayu hingga tembus marketplace nasional.',
+                focus: ['Branding Produk', 'Social Media', 'Manajemen Modal'],
+                avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250',
+                bio: 'Praktisi bisnis lokal yang percaya bahwa perempuan Indramayu memiliki kreativitas luar biasa jika dibekali digital mindset.',
+                availableTime: 'Selasa & Kamis (14.00 - 16.00 WIB)'
+            },
+            {
+                id: 'm2',
+                name: 'Siti Nurjanah',
+                role: 'Founder Olahan Mangga "Neneq Food"',
+                rating: '5.0',
+                reviews: 52,
+                district: 'Jatibarang',
+                matchPercentage: 88,
+                matchReason: 'Sesuai dengan minatmu di bidang kewirausahaan kuliner lokal dan inovasi olahan buah daerah.',
+                focus: ['Resep Olahan', 'Pengemasan Vacuum', 'Networking Pasar'],
+                avatar: 'https://images.unsplash.com/photo-1580894732468-058f7472931b?auto=format&fit=crop&q=80&w=250',
+                bio: 'Perempuan lokal Jatibarang yang merintis produk turunan mangga dari skala dapur hingga ekspor antar-pulau.',
+                availableTime: 'Rabu & Sabtu (10.00 - 12.00 WIB)'
+            },
+            {
+                id: 'm3',
+                name: 'Dewi Kartika, M.Kom',
+                role: 'Spesialis Literacy & E-Commerce',
+                rating: '4.8',
+                reviews: 29,
+                district: 'Sindang',
+                matchPercentage: 82,
+                matchReason: 'Sangat cocok untuk membangun strategi jualan online dari nol dengan memanfaatkan tools AI gratis.',
+                focus: ['TikTok Shop', 'Desain Canva', 'AI Copywriting'],
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+                bio: 'Dosen muda & fasilitator teknologi yang antusias memberdayakan pemudi daerah lewat literasi digital praktis.',
+                availableTime: 'Senin & Jumat (15.30 - 17.30 WIB)'
+            }
+        ];
+
+        const INITIAL_COURSES = [
+            {
+                id: 'c1',
+                title: 'Dasar Digital Marketing untuk Pemula',
+                category: 'Digital Skills',
+                duration: '1.5 Jam',
+                lessonsCount: 6,
+                level: 'Pemula',
+                mentor: 'Dewi Kartika',
+                progress: 40,
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c20e?auto=format&fit=crop&q=80&w=400',
+                description: 'Memahami cara membuat foto produk estetis pakai HP, menulis deskripsi menarik, dan pasang iklan sederhana di Instagram.',
+                lessons: [
+                    'Mengenal Target Pembeli Online',
+                    'Teknik Foto Produk Bermodal Cahaya Matahari',
+                    'Menulis Caption yang Mengajak Beli',
+                    'Mengatur Profil Instagram Bisnis',
+                    'Cara Menggunakan WhatsApp Business',
+                    'Ujian Singkat & Sertifikat'
+                ]
+            },
+            {
+                id: 'c2',
+                title: 'Membangun Brand Produk Olahan Khas Indramayu',
+                category: 'Local Business',
+                duration: '2.0 Jam',
+                lessonsCount: 8,
+                level: 'Menengah',
+                mentor: 'Siti Nurjanah',
+                progress: 0,
+                image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=400',
+                description: 'Mengolah kekayaan alam Indramayu (Mangga, Ikan, Batik) menjadi produk bernilai jual tinggi dengan kemasan kekinian.',
+                lessons: [
+                    'Mengidentifikasi Potensi Bahan Baku Lokal',
+                    'Uji Ketahanan Makanan Tanpa Pengawet Buatan',
+                    'Membuat Stiker & Kemasan Ramah Lingkungan',
+                    'Menghitung Harga HPP & Keuntungan',
+                    'Sertifikasi P-IRT & Halal Mudah'
+                ]
+            },
+            {
+                id: 'c3',
+                title: 'Mulai Usaha Mandiri dari Potensi Diri',
+                category: 'Entrepreneurship',
+                duration: '1.0 Jam',
+                lessonsCount: 5,
+                level: 'Pemula',
+                mentor: 'Ayu Rahma',
+                progress: 10,
+                image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=400',
+                description: 'Mengubah hobi, bakat, atau ketertarikan pribadi menjadi langkah konkret usaha skala kecil yang berkelanjutan.',
+                lessons: [
+                    'Pemetaan Bakat & Keterampilan Pribadi',
+                    'Riset Pasar Sederhana di Sekitar Rumah',
+                    'Membuat Draf Proposal Usaha Simple',
+                    'Mengelola Keuangan Rumah Tangga vs Usaha'
+                ]
+            },
+            {
+                id: 'c4',
+                title: 'Membangun Kepercayaan Diri & Public Speaking',
+                category: 'Personal Development',
+                duration: '1.2 Jam',
+                lessonsCount: 5,
+                level: 'Semua Tingkat',
+                mentor: 'Rina Kusuma',
+                progress: 0,
+                image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=400',
+                description: 'Pelajari teknik komunikasi asertif, mengatasi rasa canggung, dan menyampaikan gagasan secara percaya diri.',
+                lessons: [
+                    'Mengenali Mindset Positif Diri',
+                    'Teknik Pernapasan & Kontrol Suara',
+                    'Presentasi Produk di Depan Pembeli',
+                    'Menghadapi Kritik dengan Senyuman'
+                ]
+            }
+        ];
+
+        const INITIAL_PRODUCTS = [
+            {
+                id: 'p1',
+                title: 'Mango Artisan Chips Premium (Khas Indramayu)',
+                seller: 'Neng Aulia - Dapur Dermayu',
+                district: 'Jatibarang',
+                price: 'Rp 22.000',
+                rating: 4.9,
+                badge: 'Unggulan Lokal',
+                image: 'https://images.unsplash.com/photo-1621939514649-280e2ee25f60?auto=format&fit=crop&q=80&w=300',
+                description: 'Camilan olahan dari buah Mangga Gedong Gincu segar tanpa pemanis buatan, dikeringkan dengan suhu optimal.'
+            },
+            {
+                id: 'p2',
+                title: 'Syal Batik Paoman Motifs Modern',
+                seller: 'Siti Handayani - Sanggar Paoman',
+                district: 'Indramayu',
+                price: 'Rp 85.000',
+                rating: 5.0,
+                badge: 'Handmade',
+                image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=300',
+                description: 'Syal batik tulis khas Indramayu dengan pewarnaan alam yang ramah lingkungan dan desain kontemporer.'
+            },
+            {
+                id: 'p3',
+                title: 'Terasi Rebon Premium Super Gurih',
+                seller: 'Ibu Ratna - Kelompok Nelayan Karangampel',
+                district: 'Karangampel',
+                price: 'Rp 18.000',
+                rating: 4.8,
+                badge: '100% Alami',
+                image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=300',
+                description: 'Terasi udang rebon murni diproses secara higienis khas pesisir Karangampel tanpa pewarna sintetis.'
+            }
+        ];
+
+
+        // Helper component for badges
+        const Badge = ({ children, variant = "default", className = "" }) => {
+            const styles = {
+                default: "bg-neng-100 text-neng-800 border-neng-200",
+                rose: "bg-neng-600 text-white border-transparent",
+                peach: "bg-orange-100 text-orange-800 border-orange-200",
+                outline: "bg-white text-neng-700 border-neng-300",
+                green: "bg-emerald-100 text-emerald-800 border-emerald-200"
+            };
+            return (
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${styles[variant] || styles.default} ${className}`}>
+                    {children}
+                </span>
+            );
+        };
+
+        // Main App Component
+        function App() {
+            // Persistent User Profile State
+            const [userProfile, setUserProfile] = React.useState(() => {
+                const saved = localStorage.getItem('sahabat_neng_profile');
+                if (saved) {
+                    try { return JSON.parse(saved); } catch (e) { }
+                }
+                return {
+                    name: 'Neng Aulia',
+                    age: '20',
+                    district: 'Jatibarang',
+                    education: 'SMA / SMK',
+                    interest: 'Kuliner',
+                    secondaryInterest: 'Digital Marketing',
+                    potentialGoal: 'Kewirausahaan',
+                    needs: ['Mentor', 'Pelatihan', 'Peluang Usaha'],
+                    monthsGoal: 'Memulai usaha produk olahan lokal',
+                    isOnboarded: true, // Default onboarded with sample or start at landing
+                    savedResources: ['res-1', 'res-5'],
+                    journeyProgress: {
+                        resources: 60,
+                        agency: 40,
+                        achievement: 25
+                    }
+                };
+            });
+
+            // UI State
+            const [activeTab, setActiveTab] = React.useState('landing'); // landing, onboarding, dashboard, geomap, navigator, mentor, academy, localpreneur, safespace, marketplace, profile
+            const [isDemoMode, setIsDemoMode] = React.useState(true);
+            const [selectedResource, setSelectedResource] = React.useState(null);
+            const [selectedMentor, setSelectedMentor] = React.useState(null);
+            const [selectedCourse, setSelectedCourse] = React.useState(null);
+            const [toastMessage, setToastMessage] = React.useState(null);
+
+            // Save user profile to localStorage
+            React.useEffect(() => {
+                localStorage.setItem('sahabat_neng_profile', JSON.stringify(userProfile));
+            }, [userProfile]);
+
+            const showToast = (msg) => {
+                setToastMessage(msg);
+                setTimeout(() => setToastMessage(null), 3500);
+            };
+
+            // Toggle Demo Mode (instantly fills recommended profile and routes smoothly)
+            const handleToggleDemoMode = () => {
+                const nextMode = !isDemoMode;
+                setIsDemoMode(nextMode);
+                if (nextMode) {
+                    setUserProfile({
+                        name: 'Neng Aulia',
+                        age: '20',
+                        district: 'Jatibarang',
+                        education: 'SMK Tata Boga',
+                        interest: 'Kuliner',
+                        secondaryInterest: 'Digital Marketing',
+                        potentialGoal: 'Kewirausahaan',
+                        needs: ['Mentor', 'Pelatihan', 'Peluang Usaha'],
+                        monthsGoal: 'Mengembangkan olahan mangga & dapatkan mentor',
+                        isOnboarded: true,
+                        savedResources: ['res-1', 'res-5'],
+                        journeyProgress: {
+                            resources: 65,
+                            agency: 45,
+                            achievement: 30
+                        }
+                    });
+                    showToast('🌷 Mode Demo Aktif: Profil Neng Aulia telah dimuat!');
+                } else {
+                    showToast('Mode Standar: Silakan kustomisasi profilmu');
+                }
+            };
+
+            // Toggle Saved Resource
+            const handleToggleSaveResource = (resId) => {
+                const isSaved = userProfile.savedResources?.includes(resId);
+                let newSaved = [];
+                if (isSaved) {
+                    newSaved = userProfile.savedResources.filter(id => id !== resId);
+                    showToast('Disimpan dari daftar favoritmu.');
+                } else {
+                    newSaved = [...(userProfile.savedResources || []), resId];
+                    showToast('✨ Ditambahkan ke favorit simpananmu!');
+                }
+                setUserProfile(prev => ({
+                    ...prev,
+                    savedResources: newSaved
+                }));
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col md:flex-row bg-[#fffafb]">
+                    {/* Desktop Sidebar Navigation */}
+                    <aside className="hidden md:flex flex-col w-64 bg-white border-r border-neng-100 p-5 sticky top-0 h-screen overflow-y-auto z-30">
+                        <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => setActiveTab('landing')}>
+                            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-neng-600 to-neng-400 flex items-center justify-center text-white text-xl font-extrabold shadow-soft">
+                                N
+                            </div>
+                            <div>
+                                <h1 className="font-extrabold text-lg text-neng-darkText tracking-tight">SAHABAT NENG</h1>
+                                <p className="text-[10px] uppercase font-bold text-neng-600 tracking-wider">Indramayu Empower</p>
+                            </div>
+                        </div>
+
+                        {/* Navigation Links */}
+                        <nav className="flex-1 space-y-1.5">
+                            <NavItem icon="fa-house" label="Beranda" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+                            <NavItem icon="fa-map-location-dot" label="Empowerment GeoMap" active={activeTab === 'geomap'} onClick={() => setActiveTab('geomap')} badge="Peta" />
+                            <NavItem icon="fa-compass" label="Navigator Jalur" active={activeTab === 'navigator'} onClick={() => setActiveTab('navigator')} />
+                            <NavItem icon="fa-user-group" label="Temukan Mentor" active={activeTab === 'mentor'} onClick={() => setActiveTab('mentor')} />
+                            <NavItem icon="fa-graduation-cap" label="Neng Academy" active={activeTab === 'academy'} onClick={() => setActiveTab('academy')} />
+                            <NavItem icon="fa-lightbulb" label="Neng Localpreneur" active={activeTab === 'localpreneur'} onClick={() => setActiveTab('localpreneur')} badge="AI" />
+                            <NavItem icon="fa-shield-heart" label="Neng Safe Space" active={activeTab === 'safespace'} onClick={() => setActiveTab('safespace')} />
+                            <NavItem icon="fa-store" label="Neng Marketplace" active={activeTab === 'marketplace'} onClick={() => setActiveTab('marketplace')} />
+                        </nav>
+
+                        {/* User Profile Mini Footer */}
+                        <div className="pt-4 border-t border-neng-100 mt-auto">
+                            <div 
+                                onClick={() => setActiveTab('profile')}
+                                className={`flex items-center gap-3 p-2.5 rounded-2xl cursor-pointer transition-all ${activeTab === 'profile' ? 'bg-neng-50 border border-neng-200' : 'hover:bg-gray-50'}`}
+                            >
+                                <div className="w-9 h-9 rounded-full bg-neng-200 flex items-center justify-center text-neng-700 font-bold border border-neng-300">
+                                    {userProfile.name ? userProfile.name.charAt(0) : 'N'}
+                                </div>
+                                <div className="flex-1 overflow-hidden">
+                                    <p className="text-sm font-semibold text-neng-darkText truncate">{userProfile.name || 'Pengguna Baru'}</p>
+                                    <p className="text-xs text-neng-subText truncate"><i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>{userProfile.district || 'Indramayu'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    {/* Main Content View Container */}
+                    <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-6">
+                        {/* Top Responsive Header */}
+                        <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-neng-100 px-4 py-3 flex items-center justify-between shadow-sm">
+                            <div className="flex items-center gap-3">
+                                <div className="md:hidden flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('landing')}>
+                                    <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-neng-600 to-neng-400 flex items-center justify-center text-white text-base font-black">
+                                        N
+                                    </div>
+                                    <span className="font-extrabold text-base text-neng-darkText">SAHABAT NENG</span>
+                                </div>
+                                <span className="hidden md:inline-block text-xs font-medium text-neng-subText">
+                                    <i className="fa-solid fa-quote-left text-neng-300 mr-1"></i>
+                                    Temukan Potensimu. Temukan Jalannya.
+                                </span>
+                            </div>
+
+                            {/* Presentation Demo Mode Switch */}
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={handleToggleDemoMode}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm border ${
+                                        isDemoMode 
+                                            ? 'bg-neng-600 text-white border-neng-600 hover:bg-neng-700' 
+                                            : 'bg-white text-neng-700 border-neng-300 hover:bg-neng-50'
+                                    }`}
+                                    title="Klik untuk mengaktifkan data preset demonstrasi"
+                                >
+                                    <i className={`fa-solid ${isDemoMode ? 'fa-wand-magic-sparkles text-amber-300' : 'fa-play'}`}></i>
+                                    <span>Demo Mode</span>
+                                    <span className={`w-2 h-2 rounded-full ${isDemoMode ? 'bg-emerald-400 animate-pulse' : 'bg-gray-300'}`}></span>
+                                </button>
+
+                                {userProfile.isOnboarded && (
+                                    <button 
+                                        onClick={() => setActiveTab('profile')}
+                                        className="w-8 h-8 rounded-full bg-neng-100 flex items-center justify-center text-neng-700 text-xs font-bold border border-neng-300 md:hidden"
+                                    >
+                                        {userProfile.name ? userProfile.name.charAt(0) : 'N'}
+                                    </button>
+                                )}
+                            </div>
+                        </header>
+
+                        {/* View Switcher Router Body */}
+                        <main className="flex-1 p-4 md:p-8 max-w-6xl mx-auto w-full">
+                            {activeTab === 'landing' && <LandingView onStart={() => setActiveTab('onboarding')} onExplore={() => setActiveTab('dashboard')} />}
+                            {activeTab === 'onboarding' && <OnboardingView userProfile={userProfile} setUserProfile={setUserProfile} onComplete={() => setActiveTab('dashboard')} />}
+                            {activeTab === 'dashboard' && <DashboardView userProfile={userProfile} setActiveTab={setActiveTab} onSelectResource={setSelectedResource} />}
+                            {activeTab === 'geomap' && <GeoMapView userProfile={userProfile} onSelectResource={setSelectedResource} onSaveToggle={handleToggleSaveResource} />}
+                            {activeTab === 'navigator' && <NavigatorView userProfile={userProfile} setActiveTab={setActiveTab} />}
+                            {activeTab === 'mentor' && <MentorView userProfile={userProfile} onSelectMentor={setSelectedMentor} />}
+                            {activeTab === 'academy' && <AcademyView onSelectCourse={setSelectedCourse} />}
+                            {activeTab === 'localpreneur' && <LocalpreneurView userProfile={userProfile} />}
+                            {activeTab === 'safespace' && <SafeSpaceView />}
+                            {activeTab === 'marketplace' && <MarketplaceView showToast={showToast} />}
+                            {activeTab === 'profile' && <ProfileView userProfile={userProfile} setUserProfile={setUserProfile} setActiveTab={setActiveTab} />}
+                        </main>
+                    </div>
+
+                    {/* Mobile Bottom Bar Navigation */}
+                    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-neng-100 px-2 py-1.5 flex justify-around items-center z-40 shadow-lg">
+                        <MobileNavItem icon="fa-house" label="Beranda" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+                        <MobileNavItem icon="fa-map-location-dot" label="GeoMap" active={activeTab === 'geomap'} onClick={() => setActiveTab('geomap')} />
+                        <MobileNavItem icon="fa-compass" label="Navigator" active={activeTab === 'navigator'} onClick={() => setActiveTab('navigator')} />
+                        <MobileNavItem icon="fa-user-group" label="Mentor" active={activeTab === 'mentor'} onClick={() => setActiveTab('mentor')} />
+                        <MobileNavItem icon="fa-ellipsis-vertical" label="Menu" active={['academy', 'localpreneur', 'safespace', 'marketplace'].includes(activeTab)} onClick={() => setActiveTab('academy')} />
+                    </nav>
+
+                    {/* Modals & Drawers */}
+                    {selectedResource && (
+                        <ResourceDetailModal 
+                            resource={selectedResource} 
+                            isSaved={userProfile.savedResources?.includes(selectedResource.id)}
+                            onClose={() => setSelectedResource(null)} 
+                            onToggleSave={() => handleToggleSaveResource(selectedResource.id)}
+                            onNavigate={() => {
+                                setSelectedResource(null);
+                                setActiveTab('navigator');
+                            }}
+                        />
+                    )}
+
+                    {selectedMentor && (
+                        <MentorDetailModal 
+                            mentor={selectedMentor} 
+                            onClose={() => setSelectedMentor(null)} 
+                            showToast={showToast}
+                        />
+                    )}
+
+                    {selectedCourse && (
+                        <CourseDetailModal
+                            course={selectedCourse}
+                            onClose={() => setSelectedCourse(null)}
+                            showToast={showToast}
+                        />
+                    )}
+
+                    {/* Floating Toast Notification */}
+                    {toastMessage && (
+                        <div className="fixed top-16 right-4 z-50 bg-neng-darkText text-white text-xs font-medium px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2 border border-neng-700 animate-fade-in">
+                            <i className="fa-solid fa-circle-check text-neng-300"></i>
+                            <span>{toastMessage}</span>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Navigation Item Component (Desktop)
+        function NavItem({ icon, label, active, onClick, badge }) {
+            return (
+                <button
+                    onClick={onClick}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-sm font-semibold transition-all ${
+                        active 
+                            ? 'bg-gradient-to-r from-neng-600 to-neng-500 text-white shadow-soft' 
+                            : 'text-neng-darkText hover:bg-neng-50 hover:text-neng-600'
+                    }`}
+                >
+                    <div className="flex items-center gap-3">
+                        <i className={`fa-solid ${icon} w-5 text-center ${active ? 'text-white' : 'text-neng-500'}`}></i>
+                        <span>{label}</span>
+                    </div>
+                    {badge && (
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${active ? 'bg-white/20 text-white' : 'bg-neng-100 text-neng-700'}`}>
+                            {badge}
+                        </span>
+                    )}
+                </button>
+            );
+        }
+
+        // Navigation Item Component (Mobile)
+        function MobileNavItem({ icon, label, active, onClick }) {
+            return (
+                <button
+                    onClick={onClick}
+                    className={`flex flex-col items-center justify-center py-1 px-3 rounded-xl transition-all ${
+                        active ? 'text-neng-600 font-bold scale-105' : 'text-gray-400 font-medium'
+                    }`}
+                >
+                    <i className={`fa-solid ${icon} text-base mb-0.5`}></i>
+                    <span className="text-[10px] tracking-tight">{label}</span>
+                </button>
+            );
+        }
+
+
+        // 1. LANDING PAGE VIEW
+        function LandingView({ onStart, onExplore }) {
+            return (
+                <div className="space-y-12 animate-fade-in py-2">
+                    {/* Hero Section */}
+                    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-neng-100 via-white to-neng-peach border border-neng-200 p-8 md:p-12 shadow-soft">
+                        <div className="max-w-2xl space-y-6 relative z-10">
+                            <Badge variant="rose" className="px-3 py-1 text-xs">
+                                <i className="fa-solid fa-sparkles mr-1.5"></i> Platform Pemberdayaan Perempuan Indramayu
+                            </Badge>
+                            
+                            <h1 className="text-3xl md:text-5xl font-extrabold text-neng-darkText leading-tight">
+                                SAHABAT NENG
+                                <span className="block text-neng-600 mt-1">Temukan Potensimu. Temukan Jalannya.</span>
+                            </h1>
+
+                            <p className="text-sm md:text-base text-neng-subText leading-relaxed">
+                                Platform pemberdayaan perempuan muda Indramayu untuk mengenali potensi, menemukan sumber daya lokal, mendapatkan pendampingan, dan membangun peluang yang bermakna.
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                                <button
+                                    onClick={onStart}
+                                    className="px-6 py-3.5 rounded-2xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700 transition-all shadow-soft flex items-center justify-center gap-2"
+                                >
+                                    <span>Mulai Perjalananmu</span>
+                                    <i className="fa-solid fa-arrow-right"></i>
+                                </button>
+
+                                <button
+                                    onClick={onExplore}
+                                    className="px-6 py-3.5 rounded-2xl bg-white text-neng-700 font-bold text-sm border border-neng-200 hover:bg-neng-50 transition-all flex items-center justify-center gap-2"
+                                >
+                                    <i className="fa-solid fa-compass text-neng-500"></i>
+                                    <span>Lihat Ekosistem Demo</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Decorative Graphic Element */}
+                        <div className="hidden lg:block absolute -right-6 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-gradient-to-tr from-neng-200/50 to-neng-300/30 blur-2xl pointer-events-none"></div>
+                    </section>
+
+                    {/* Empowerment Journey Flow Visual */}
+                    <section className="space-y-6">
+                        <div className="text-center max-w-xl mx-auto space-y-2">
+                            <h2 className="text-xl md:text-2xl font-bold text-neng-darkText">Alur Perjalanan Pemberdayaan</h2>
+                            <p className="text-xs md:text-sm text-neng-subText">Lima langkah terpadu mengubah potensi diri menjadi karya produktif yang berdampak.</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                            <FlowCard step="1" title="Kenali" desc="Evaluasi minat & bakat diri" icon="fa-heart" color="bg-rose-50 border-rose-200 text-rose-600" />
+                            <FlowCard step="2" title="Temukan" desc="Akses sumber daya Indramayu" icon="fa-map-location-dot" color="bg-pink-50 border-pink-200 text-pink-600" />
+                            <FlowCard step="3" title="Dampingi" desc="Terhubung dengan mentor" icon="fa-handshake" color="bg-amber-50 border-amber-200 text-amber-600" />
+                            <FlowCard step="4" title="Kembangkan" desc="Asah keterampilan di Academy" icon="fa-seedling" color="bg-emerald-50 border-emerald-200 text-emerald-600" />
+                            <FlowCard step="5" title="Berkarya" desc="Ciptakan usaha & karya nyata" icon="fa-star" color="bg-purple-50 border-purple-200 text-purple-600" />
+                        </div>
+                    </section>
+
+                    {/* Why Sahabat Neng? Problems vs Solution */}
+                    <section className="bg-white rounded-3xl p-6 md:p-8 border border-neng-100 shadow-sm space-y-8">
+                        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-neng-100 pb-6">
+                            <div>
+                                <h2 className="text-xl md:text-2xl font-bold text-neng-darkText">Mengapa Sahabat Neng?</h2>
+                                <p className="text-xs md:text-sm text-neng-subText">Menghubungkan ruang aman, akses lokal, dan kesempatan ekonomi.</p>
+                            </div>
+                            <Badge variant="peach" className="px-3 py-1">Kerangka: Resources → Agency → Achievement</Badge>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-6">
+                            <ProblemCard 
+                                number="01"
+                                title="Sulit Mengenali Potensi"
+                                desc="Keterbatasan akses informasi membuat banyak perempuan muda bingung memetakan minat dan keterampilan yang bisa dikembangkan."
+                            />
+                            <ProblemCard 
+                                number="02"
+                                title="Sumber Daya Terpisah"
+                                desc="Pelatihan, pendamping usaha, dan komunitas lokal Indramayu ada di mana-mana, namun belum mudah ditemukan dalam satu sistem."
+                            />
+                            <ProblemCard 
+                                number="03"
+                                title="Belum Terhubung Peluang"
+                                desc="Potensi dan semangat berkarya belum selalu tersambung dengan pendampingan mentor dan akses pasar yang relevan."
+                            />
+                        </div>
+
+                        {/* Integrated Solution Banner */}
+                        <div className="bg-gradient-to-r from-neng-600 to-neng-700 rounded-2xl p-6 text-white flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div className="space-y-1">
+                                <h3 className="font-bold text-lg">Solusi Sahabat Neng</h3>
+                                <p className="text-xs text-neng-100 leading-relaxed max-w-xl">
+                                    Satu ekosistem terpadu yang memadukan pemetaan kebutuhan, peta lokasi sumber daya (Empowerment GeoMap), rekomendasi jalur, hingga mentor lokal.
+                                </p>
+                            </div>
+                            <button
+                                onClick={onStart}
+                                className="px-5 py-2.5 rounded-xl bg-white text-neng-700 font-extrabold text-xs hover:bg-neng-50 transition-all whitespace-nowrap shadow-md"
+                            >
+                                Coba Onboarding Sekarang
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            );
+        }
+
+        function FlowCard({ step, title, desc, icon, color }) {
+            return (
+                <div className={`p-4 rounded-2xl border ${color} flex flex-col items-center text-center space-y-2 relative`}>
+                    <span className="absolute top-2 left-3 text-[10px] font-black opacity-40">0{step}</span>
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-base my-1">
+                        <i className={`fa-solid ${icon}`}></i>
+                    </div>
+                    <h3 className="font-bold text-sm text-neng-darkText">{title}</h3>
+                    <p className="text-[11px] text-neng-subText leading-tight">{desc}</p>
+                </div>
+            );
+        }
+
+        function ProblemCard({ number, title, desc }) {
+            return (
+                <div className="p-5 rounded-2xl bg-neng-softBg border border-neng-100 space-y-2">
+                    <span className="text-xs font-black text-neng-400 tracking-wider">{number}</span>
+                    <h3 className="font-bold text-sm text-neng-darkText">{title}</h3>
+                    <p className="text-xs text-neng-subText leading-relaxed">{desc}</p>
+                </div>
+            );
+        }
+
+
+        // 2. ONBOARDING / NEEDS ASSESSMENT VIEW
+        function OnboardingView({ userProfile, setUserProfile, onComplete }) {
+            const [step, setStep] = React.useState(1);
+            const [formData, setFormData] = React.useState({
+                name: userProfile.name || '',
+                age: userProfile.age || '20',
+                district: userProfile.district || 'Indramayu',
+                education: userProfile.education || 'SMA / SMK',
+                interest: userProfile.interest || 'Kuliner',
+                potentialGoal: userProfile.potentialGoal || 'Kewirausahaan',
+                needs: userProfile.needs || ['Mentor', 'Pelatihan'],
+                monthsGoal: userProfile.monthsGoal || 'Memulai usaha sederhana'
+            });
+
+            const handleNext = () => {
+                if (step < 4) {
+                    setStep(step + 1);
+                } else {
+                    // Complete Assessment
+                    setUserProfile(prev => ({
+                        ...prev,
+                        ...formData,
+                        isOnboarded: true
+                    }));
+                    setStep(5); // Show summary step
+                }
+            };
+
+            const handleInterestSelect = (val) => {
+                setFormData(prev => ({ ...prev, interest: val }));
+            };
+
+            const handlePotentialSelect = (val) => {
+                setFormData(prev => ({ ...prev, potentialGoal: val }));
+            };
+
+            const handleNeedToggle = (need) => {
+                const current = formData.needs || [];
+                if (current.includes(need)) {
+                    setFormData(prev => ({ ...prev, needs: current.filter(n => n !== need) }));
+                } else {
+                    setFormData(prev => ({ ...prev, needs: [...current, need] }));
+                }
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto space-y-6 animate-fade-in py-4">
+                    {/* Step Tracker Header */}
+                    <div className="bg-white p-4 rounded-2xl border border-neng-100 shadow-sm flex items-center justify-between">
+                        <div>
+                            <span className="text-[10px] font-bold uppercase text-neng-600 tracking-wider">Asesmen Pemberdayaan</span>
+                            <h2 className="font-bold text-sm text-neng-darkText">
+                                {step <= 4 ? `Langkah ${step} dari 4` : 'Profil Pemberdayaan Siap!'}
+                            </h2>
+                        </div>
+                        {step <= 4 && (
+                            <div className="flex gap-1.5">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div 
+                                        key={i} 
+                                        className={`w-7 h-2 rounded-full transition-all ${i <= step ? 'bg-neng-600' : 'bg-neng-100'}`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Step 1: Profil Dasar */}
+                    {step === 1 && (
+                        <div className="bg-white p-6 md:p-8 rounded-3xl border border-neng-100 shadow-soft space-y-6">
+                            <div>
+                                <h2 className="text-lg font-bold text-neng-darkText">Langkah 1: Profil Dasar</h2>
+                                <p className="text-xs text-neng-subText">Ceritakan sedikit tentang dirimu agar kami dapat menyesuaikan rekomendasi.</p>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-neng-darkText mb-1.5">Nama Panggilan</label>
+                                    <input 
+                                        type="text" 
+                                        value={formData.name}
+                                        onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                        placeholder="Contoh: Neng Aulia"
+                                        className="w-full px-4 py-2.5 rounded-xl border border-neng-200 text-sm focus:outline-none focus:ring-2 focus:ring-neng-500"
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-neng-darkText mb-1.5">Usia</label>
+                                        <input 
+                                            type="number" 
+                                            value={formData.age}
+                                            onChange={e => setFormData({ ...formData, age: e.target.value })}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-neng-200 text-sm focus:outline-none focus:ring-2 focus:ring-neng-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-neng-darkText mb-1.5">Kecamatan di Indramayu</label>
+                                        <select 
+                                            value={formData.district}
+                                            onChange={e => setFormData({ ...formData, district: e.target.value })}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-neng-200 text-sm focus:outline-none focus:ring-2 focus:ring-neng-500 bg-white"
+                                        >
+                                            {INDRAMAYU_DISTRICTS.map(d => (
+                                                <option key={d} value={d}>{d}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-bold text-neng-darkText mb-2">Minat Utama Saat Ini</label>
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                        {['Kuliner', 'Fashion', 'Kerajinan', 'Digital Marketing', 'Teknologi', 'Pendidikan', 'Seni & Kreativitas', 'Lingkungan', 'Kewirausahaan'].map(m => (
+                                            <button
+                                                key={m}
+                                                type="button"
+                                                onClick={() => handleInterestSelect(m)}
+                                                className={`p-2.5 rounded-xl text-xs font-bold transition-all border text-left ${
+                                                    formData.interest === m 
+                                                        ? 'bg-neng-600 text-white border-neng-600 shadow-sm' 
+                                                        : 'bg-neng-softBg text-neng-darkText border-neng-100 hover:border-neng-300'
+                                                }`}
+                                            >
+                                                {m}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button 
+                                onClick={handleNext} 
+                                disabled={!formData.name}
+                                className="w-full py-3 rounded-xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700 disabled:opacity-50 transition-all shadow-soft"
+                            >
+                                Lanjut: Potensi Diri
+                            </button>
+                        </div>
+                    )}
+
+                    {/* Step 2: Potensi Diri */}
+                    {step === 2 && (
+                        <div className="bg-white p-6 md:p-8 rounded-3xl border border-neng-100 shadow-soft space-y-6">
+                            <div>
+                                <h2 className="text-lg font-bold text-neng-darkText">Langkah 2: Potensi Diri</h2>
+                                <p className="text-xs text-neng-subText">Hal apa yang paling ingin kamu kembangkan dalam waktu dekat?</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {[
+                                    { id: 'Keterampilan', desc: 'Kemampuan teknis / produk', icon: 'fa-wrench' },
+                                    { id: 'Kepercayaan diri', desc: 'Public speaking & mindset', icon: 'fa-sparkles' },
+                                    { id: 'Kewirausahaan', desc: 'Merintis & mengelola usaha', icon: 'fa-store' },
+                                    { id: 'Literasi digital', desc: 'Medsos, HP & AI tools', icon: 'fa-laptop' },
+                                    { id: 'Networking', desc: 'Memperluas relasi & komunitas', icon: 'fa-users' },
+                                    { id: 'Kepemimpinan', desc: 'Memimpin tim / kegiatan', icon: 'fa-crown' }
+                                ].map(item => (
+                                    <div
+                                        key={item.id}
+                                        onClick={() => handlePotentialSelect(item.id)}
+                                        className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-start gap-3 ${
+                                            formData.potentialGoal === item.id 
+                                                ? 'bg-neng-50 border-neng-600 ring-2 ring-neng-200' 
+                                                : 'bg-white border-neng-100 hover:border-neng-200'
+                                        }`}
+                                    >
+                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-sm ${formData.potentialGoal === item.id ? 'bg-neng-600 text-white' : 'bg-neng-100 text-neng-700'}`}>
+                                            <i className={`fa-solid ${item.icon}`}></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-xs text-neng-darkText">{item.id}</h3>
+                                            <p className="text-[11px] text-neng-subText">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button onClick={() => setStep(1)} className="w-1/3 py-3 rounded-xl border border-neng-200 text-neng-700 font-bold text-sm">
+                                    Kembali
+                                </button>
+                                <button onClick={handleNext} className="w-2/3 py-3 rounded-xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700">
+                                    Lanjut: Kebutuhan Saat Ini
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 3: Kebutuhan Saat Ini */}
+                    {step === 3 && (
+                        <div className="bg-white p-6 md:p-8 rounded-3xl border border-neng-100 shadow-soft space-y-6">
+                            <div>
+                                <h2 className="text-lg font-bold text-neng-darkText">Langkah 3: Kebutuhan Saat Ini</h2>
+                                <p className="text-xs text-neng-subText">Boleh memilih lebih dari satu dukungan yang sedang kamu perlukan.</p>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2.5">
+                                {[
+                                    'Informasi', 'Pelatihan', 'Mentor', 
+                                    'Komunitas', 'Peluang Usaha', 'Ruang Aman Konsultasi',
+                                    'Akses Pasar', 'Saya Belum Tahu (Bantu Saya)'
+                                ].map(need => {
+                                    const isSelected = formData.needs?.includes(need);
+                                    return (
+                                        <button
+                                            key={need}
+                                            type="button"
+                                            onClick={() => handleNeedToggle(need)}
+                                            className={`p-3 rounded-2xl text-xs font-bold border transition-all text-left flex items-center justify-between ${
+                                                isSelected 
+                                                    ? 'bg-neng-600 text-white border-neng-600' 
+                                                    : 'bg-neng-softBg text-neng-darkText border-neng-100'
+                                            }`}
+                                        >
+                                            <span>{need}</span>
+                                            {isSelected && <i className="fa-solid fa-check text-xs"></i>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button onClick={() => setStep(2)} className="w-1/3 py-3 rounded-xl border border-neng-200 text-neng-700 font-bold text-sm">
+                                    Kembali
+                                </button>
+                                <button onClick={handleNext} className="w-2/3 py-3 rounded-xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700">
+                                    Lanjut: Tujuan Utama
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 4: Tujuan */}
+                    {step === 4 && (
+                        <div className="bg-white p-6 md:p-8 rounded-3xl border border-neng-100 shadow-soft space-y-6">
+                            <div>
+                                <h2 className="text-lg font-bold text-neng-darkText">Langkah 4: Tujuan 3-6 Bulan Ke Depan</h2>
+                                <p className="text-xs text-neng-subText">Dalam beberapa bulan ke depan, apa pencapaian utama yang kamu impikan?</p>
+                            </div>
+
+                            <div className="space-y-2">
+                                {[
+                                    'Memiliki keterampilan teknis baru',
+                                    'Mendapatkan mentor pendamping usaha',
+                                    'Membuat karya / produk lokal khas Indramayu',
+                                    'Memulai usaha mandiri skala rumah tangga',
+                                    'Mengembangkan bisnis yang sudah berjalan',
+                                    'Menemukan komunitas sefrekuensi & ruang aman'
+                                ].map(g => (
+                                    <button
+                                        key={g}
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({ ...prev, monthsGoal: g }))}
+                                        className={`w-full p-3.5 rounded-2xl text-xs font-bold border text-left transition-all flex items-center justify-between ${
+                                            formData.monthsGoal === g 
+                                                ? 'bg-neng-50 border-neng-600 text-neng-700 ring-1 ring-neng-300' 
+                                                : 'bg-white border-neng-100 text-neng-darkText hover:border-neng-200'
+                                        }`}
+                                    >
+                                        <span>{g}</span>
+                                        {formData.monthsGoal === g && <i className="fa-solid fa-circle-check text-neng-600"></i>}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex gap-3 pt-2">
+                                <button onClick={() => setStep(3)} className="w-1/3 py-3 rounded-xl border border-neng-200 text-neng-700 font-bold text-sm">
+                                    Kembali
+                                </button>
+                                <button onClick={handleNext} className="w-2/3 py-3 rounded-xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700 shadow-soft">
+                                    Selesaikan Profil
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 5: Completion & Summary Card */}
+                    {step === 5 && (
+                        <div className="bg-white p-6 md:p-8 rounded-3xl border border-neng-100 shadow-soft space-y-6 text-center animate-fade-in">
+                            <div className="w-16 h-16 rounded-full bg-neng-100 text-neng-600 flex items-center justify-center text-2xl mx-auto shadow-inner">
+                                🌷
+                            </div>
+
+                            <div className="space-y-1">
+                                <h2 className="text-xl font-extrabold text-neng-darkText">Profil Pemberdayaanmu Sudah Siap!</h2>
+                                <p className="text-xs text-neng-subText">Kami telah menyiapkan rekomendasi jalur dan sumber daya lokal sesuai kebutuhanmu.</p>
+                            </div>
+
+                            {/* Brief Summary Box */}
+                            <div className="p-5 rounded-2xl bg-neng-softBg border border-neng-200 text-left space-y-3">
+                                <h3 className="font-bold text-xs text-neng-700 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i className="fa-solid fa-clipboard-user"></i> Ringkasan Profil Neng
+                                </h3>
+
+                                <div className="text-xs text-neng-darkText leading-relaxed space-y-1.5">
+                                    <p>
+                                        <strong>Nama:</strong> {formData.name} ({formData.age} tahun, Kecamatan {formData.district})
+                                    </p>
+                                    <p>
+                                        <strong>Minat:</strong> {formData.interest} &bull; <strong>Potensi:</strong> {formData.potentialGoal}
+                                    </p>
+                                    <p>
+                                        <strong>Kebutuhan Utama:</strong> {formData.needs.join(', ')}
+                                    </p>
+                                    <p className="text-neng-600 font-medium">
+                                        &ldquo;Tujuanmu: {formData.monthsGoal}&rdquo;
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={onComplete}
+                                className="w-full py-3.5 rounded-2xl bg-neng-600 text-white font-bold text-sm hover:bg-neng-700 transition-all shadow-soft flex items-center justify-center gap-2"
+                            >
+                                <span>Lihat Rekomendasi & Dashboard</span>
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+
+        // 3. DASHBOARD VIEW
+        function DashboardView({ userProfile, setActiveTab, onSelectResource }) {
+            return (
+                <div className="space-y-8 animate-fade-in">
+                    {/* Welcome Banner */}
+                    <div className="bg-gradient-to-r from-neng-600 via-neng-500 to-rose-500 rounded-3xl p-6 md:p-8 text-white shadow-soft relative overflow-hidden">
+                        <div className="relative z-10 space-y-2">
+                            <Badge variant="outline" className="bg-white/20 text-white border-white/30 text-[10px]">
+                                <i className="fa-solid fa-location-dot mr-1"></i> {userProfile.district || 'Indramayu'}
+                            </Badge>
+                            <h1 className="text-2xl md:text-3xl font-extrabold">Halo, Neng {userProfile.name || 'Aulia'}! 🌷</h1>
+                            <p className="text-xs md:text-sm text-neng-100 max-w-xl">
+                                Mari temukan langkah berikutnya untuk mengasah potensimu di bidang <strong className="text-white underline">{userProfile.interest || 'Kuliner'}</strong> dan terhubung dengan mentor lokal.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Empowerment Framework Progress */}
+                    <section className="bg-white rounded-3xl p-6 border border-neng-100 shadow-sm space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="font-bold text-base text-neng-darkText">Perjalanan Pemberdayaanmu</h2>
+                                <p className="text-xs text-neng-subText">Kerangka Pemberdayaan: Resources &rarr; Agency &rarr; Achievement</p>
+                            </div>
+                            <span className="text-[10px] font-bold text-neng-500 bg-neng-50 px-2.5 py-1 rounded-full border border-neng-100">
+                                Contoh Perjalanan (Prototype Progress)
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <ProgressBarItem 
+                                title="1. Resources (Akses)" 
+                                percentage={userProfile.journeyProgress?.resources || 60} 
+                                desc="Akses pelatihan, mentor & komunitas lokal"
+                                color="bg-rose-500"
+                            />
+                            <ProgressBarItem 
+                                title="2. Agency (Keputusan)" 
+                                percentage={userProfile.journeyProgress?.agency || 40} 
+                                desc="Mengenali potensi & mengambil langkah"
+                                color="bg-pink-500"
+                            />
+                            <ProgressBarItem 
+                                title="3. Achievement (Hasil)" 
+                                percentage={userProfile.journeyProgress?.achievement || 20} 
+                                desc="Keterampilan baru, karya & usaha"
+                                color="bg-emerald-500"
+                            />
+                        </div>
+                    </section>
+
+                    {/* Quick Core Features Action Grid */}
+                    <section className="space-y-3">
+                        <h2 className="font-bold text-base text-neng-darkText">Layanan Pemberdayaan Utama</h2>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <QuickActionCard 
+                                icon="fa-map-location-dot" 
+                                title="Empowerment GeoMap" 
+                                subtitle="Cari sumber daya lokal"
+                                color="bg-rose-50 text-rose-600"
+                                onClick={() => setActiveTab('geomap')}
+                            />
+                            <QuickActionCard 
+                                icon="fa-compass" 
+                                title="Navigator Jalur" 
+                                subtitle="Rekomendasi langkah"
+                                color="bg-pink-50 text-pink-600"
+                                onClick={() => setActiveTab('navigator')}
+                            />
+                            <QuickActionCard 
+                                icon="fa-user-group" 
+                                title="Matching Mentor" 
+                                subtitle="Pendampingan UMKM"
+                                color="bg-amber-50 text-amber-600"
+                                onClick={() => setActiveTab('mentor')}
+                            />
+                            <QuickActionCard 
+                                icon="fa-lightbulb" 
+                                title="Localpreneur AI" 
+                                subtitle="Inovasi ide produk"
+                                color="bg-purple-50 text-purple-600"
+                                onClick={() => setActiveTab('localpreneur')}
+                            />
+                        </div>
+                    </section>
+
+                    {/* Recommended Resources Near User */}
+                    <section className="bg-white rounded-3xl p-6 border border-neng-100 shadow-sm space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="font-bold text-base text-neng-darkText">Rekomendasi Terdekat di Indramayu</h2>
+                            <button onClick={() => setActiveTab('geomap')} className="text-xs font-bold text-neng-600 hover:underline">
+                                Lihat Semua Peta <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-4">
+                            {INITIAL_GEOMAP_RESOURCES.slice(0, 2).map(res => (
+                                <div key={res.id} className="p-4 rounded-2xl bg-neng-softBg border border-neng-100 flex justify-between items-start gap-3 hover:border-neng-200 transition-all">
+                                    <div className="space-y-2">
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="rose">{res.category}</Badge>
+                                            <span className="text-[11px] text-neng-subText"><i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>{res.district} ({res.distance})</span>
+                                        </div>
+                                        <h3 className="font-bold text-sm text-neng-darkText">{res.title}</h3>
+                                        <p className="text-xs text-neng-subText line-clamp-2">{res.description}</p>
+                                    </div>
+                                    <button 
+                                        onClick={() => onSelectResource(res)}
+                                        className="px-3 py-1.5 rounded-xl bg-white border border-neng-200 text-neng-700 font-bold text-xs hover:bg-neng-50 whitespace-nowrap"
+                                    >
+                                        Detail
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                </div>
+            );
+        }
+
+        function ProgressBarItem({ title, percentage, desc, color }) {
+            return (
+                <div className="p-4 rounded-2xl bg-neng-softBg border border-neng-100 space-y-2">
+                    <div className="flex justify-between items-center text-xs font-bold text-neng-darkText">
+                        <span>{title}</span>
+                        <span className="text-neng-600">{percentage}%</span>
+                    </div>
+                    <div className="w-full bg-neng-200/50 h-2 rounded-full overflow-hidden">
+                        <div className={`h-full ${color} rounded-full transition-all duration-500`} style={{ width: `${percentage}%` }}></div>
+                    </div>
+                    <p className="text-[11px] text-neng-subText">{desc}</p>
+                </div>
+            );
+        }
+
+        function QuickActionCard({ icon, title, subtitle, color, onClick }) {
+            return (
+                <div 
+                    onClick={onClick}
+                    className="p-4 rounded-2xl bg-white border border-neng-100 shadow-sm hover:shadow-soft cursor-pointer transition-all space-y-2 group"
+                >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-base ${color} group-hover:scale-110 transition-transform`}>
+                        <i className={`fa-solid ${icon}`}></i>
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-xs text-neng-darkText">{title}</h3>
+                        <p className="text-[10px] text-neng-subText">{subtitle}</p>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 4. AI EMPOWERMENT GEOMAP VIEW
+        function GeoMapView({ userProfile, onSelectResource, onSaveToggle }) {
+            const [selectedCategory, setSelectedCategory] = React.useState('Semua');
+            const [selectedDistrictFilter, setSelectedDistrictFilter] = React.useState('Semua');
+            const [searchQuery, setSearchQuery] = React.useState('');
+
+            const categories = ['Semua', 'Pelatihan', 'Mentor', 'Komunitas', 'Pusat Produksi', 'Peluang', 'Pendidikan'];
+
+            const filteredResources = INITIAL_GEOMAP_RESOURCES.filter(res => {
+                const matchCat = selectedCategory === 'Semua' || res.category === selectedCategory;
+                const matchDistrict = selectedDistrictFilter === 'Semua' || res.district === selectedDistrictFilter;
+                const matchQuery = res.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                   res.description.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchDistrict && matchQuery;
+            });
+
+            return (
+                <div className="space-y-6 animate-fade-in">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-2xl font-extrabold text-neng-darkText">Empowerment GeoMap</h1>
+                                <Badge variant="rose">Indramayu Ecosystem</Badge>
+                            </div>
+                            <p className="text-xs text-neng-subText">Temukan pelatihan, komunitas, mentor, dan peluang produktif di sekitar Indramayu.</p>
+                        </div>
+
+                        {/* Search Input */}
+                        <div className="relative">
+                            <i className="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-neng-400 text-xs"></i>
+                            <input 
+                                type="text"
+                                placeholder="Cari sumber daya..."
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                                className="pl-9 pr-4 py-2 rounded-xl border border-neng-200 text-xs focus:outline-none focus:ring-2 focus:ring-neng-500 w-full md:w-64"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Filter Pills */}
+                    <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1">
+                        {categories.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap border ${
+                                    selectedCategory === cat 
+                                        ? 'bg-neng-600 text-white border-neng-600 shadow-sm' 
+                                        : 'bg-white text-neng-darkText border-neng-200 hover:bg-neng-50'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+
+                        <select
+                            value={selectedDistrictFilter}
+                            onChange={e => setSelectedDistrictFilter(e.target.value)}
+                            className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-neng-200 text-neng-700 focus:outline-none"
+                        >
+                            <option value="Semua">📍 Semua Kecamatan</option>
+                            {INDRAMAYU_DISTRICTS.map(d => (
+                                <option key={d} value={d}>{d}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Interactive Map Visual Mockup */}
+                    <div className="bg-gradient-to-b from-rose-100/60 to-neng-peach rounded-3xl p-6 border border-neng-200 relative overflow-hidden shadow-inner flex flex-col items-center justify-center min-h-[220px]">
+                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-neng-700 shadow-sm border border-neng-100">
+                            <i className="fa-solid fa-layer-group text-neng-500 mr-1"></i> Visualisasi Peta Wilayah Indramayu
+                        </div>
+
+                        {/* Map Grid Simulation Pins */}
+                        <div className="w-full max-w-2xl grid grid-cols-2 md:grid-cols-3 gap-3 my-4">
+                            {filteredResources.slice(0, 6).map((r, idx) => (
+                                <div 
+                                    key={r.id}
+                                    onClick={() => onSelectResource(r)}
+                                    className="bg-white p-3 rounded-2xl shadow-sm border border-neng-200 hover:shadow-md cursor-pointer transition-all flex items-center gap-2 group"
+                                >
+                                    <div className="w-8 h-8 rounded-xl bg-neng-100 text-neng-600 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                                        <i className={`fa-solid ${r.icon}`}></i>
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-bold text-xs text-neng-darkText truncate">{r.title}</h4>
+                                        <p className="text-[10px] text-neng-subText">{r.district} &bull; {r.distance}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <span className="text-[10px] text-neng-subText italic">
+                            * Data prototype tersimulasi untuk wilayah Indramayu & sekitarnya.
+                        </span>
+                    </div>
+
+                    {/* Resource List Grid */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {filteredResources.map(res => {
+                            const isSaved = userProfile.savedResources?.includes(res.id);
+                            return (
+                                <div key={res.id} className="bg-white p-5 rounded-3xl border border-neng-100 shadow-sm hover:shadow-soft transition-all space-y-3">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="rose">{res.category}</Badge>
+                                            <span className="text-xs text-neng-subText"><i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>{res.district} ({res.distance})</span>
+                                        </div>
+                                        <button 
+                                            onClick={() => onSaveToggle(res.id)} 
+                                            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors ${isSaved ? 'bg-neng-100 text-neng-600' : 'bg-gray-100 text-gray-400 hover:text-neng-600'}`}
+                                            title="Simpan Sumber Daya"
+                                        >
+                                            <i className={`fa-${isSaved ? 'solid' : 'regular'} fa-bookmark`}></i>
+                                        </button>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="font-bold text-base text-neng-darkText">{res.title}</h3>
+                                        <p className="text-xs text-neng-subText leading-relaxed mt-1">{res.description}</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {res.tags.map(t => (
+                                            <span key={t} className="text-[10px] font-semibold text-neng-600 bg-neng-50 px-2 py-0.5 rounded-md border border-neng-100">
+                                                #{t}
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <div className="pt-3 border-t border-neng-100 flex items-center justify-between">
+                                        <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
+                                            <i className="fa-solid fa-star"></i> {res.rating} ({res.reviews} ulasan)
+                                        </span>
+                                        <button
+                                            onClick={() => onSelectResource(res)}
+                                            className="px-4 py-2 rounded-xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm"
+                                        >
+                                            Lihat Detail
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 5. AI EMPOWERMENT NAVIGATOR VIEW
+        function NavigatorView({ userProfile, setActiveTab }) {
+            return (
+                <div className="space-y-6 animate-fade-in">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-2xl font-extrabold text-neng-darkText">Empowerment Navigator</h1>
+                            <Badge variant="peach"><i className="fa-solid fa-compass mr-1"></i> Jalur Rekomendasi</Badge>
+                        </div>
+                        <p className="text-xs text-neng-subText">
+                            Rekomendasi langkah terstruktur berdasarkan minat (<strong className="text-neng-700">{userProfile.interest || 'Kuliner'}</strong>) dan tujuanmu.
+                        </p>
+                    </div>
+
+                    {/* Reason Callout Box */}
+                    <div className="p-4 rounded-2xl bg-neng-50 border border-neng-200 flex items-start gap-3">
+                        <i className="fa-solid fa-circle-info text-neng-600 text-base mt-0.5"></i>
+                        <p className="text-xs text-neng-darkText leading-relaxed">
+                            <strong>Mengapa jalur ini dibuat?</strong> Rekomendasi ini dirancang berdasarkan profil minatmu di bidang <u>{userProfile.interest || 'Kuliner'}</u>, potensi pengembangan <u>{userProfile.potentialGoal || 'Kewirausahaan'}</u>, dan kebutuhan pendampingan di wilayah Indramayu.
+                        </p>
+                    </div>
+
+                    {/* Sequential Pathway Timeline */}
+                    <div className="bg-white rounded-3xl p-6 border border-neng-100 shadow-sm space-y-6">
+                        <h2 className="font-bold text-base text-neng-darkText flex items-center gap-2">
+                            <i className="fa-solid fa-route text-neng-600"></i> Jalur Pemberdayaan Rekomendasi
+                        </h2>
+
+                        <div className="space-y-4 relative before:absolute before:left-5 before:top-3 before:bottom-3 before:w-0.5 before:bg-neng-200">
+                            <PathwayStep 
+                                step="1" 
+                                title="Ikuti Pelatihan Digital Marketing & Olahan Kuliner" 
+                                category="Resources (Akses)"
+                                desc="Pelajari teknik foto produk makanan dan pengemasan estetis di Pelatihan Olahan Mangga Jatibarang."
+                                actionText="Buka Peta Pelatihan"
+                                onAction={() => setActiveTab('geomap')}
+                            />
+                            <PathwayStep 
+                                step="2" 
+                                title="Hubungkan dengan Mentor UMKM (Ayu Rahma)" 
+                                category="Agency (Pendampingan)"
+                                desc="Dapatkan masukan langsung mengenai penetapan harga (HPP) dan legalitas sederhana (NIB/P-IRT)."
+                                actionText="Ajukan Pendampingan"
+                                onAction={() => setActiveTab('mentor')}
+                            />
+                            <PathwayStep 
+                                step="3" 
+                                title="Kembangkan Ide Produk Lokal lewat Localpreneur AI" 
+                                category="Agency (Inovasi)"
+                                desc="Gunakan generator ide untuk merancang varian Mango Snack Box khas Indramayu."
+                                actionText="Coba Localpreneur"
+                                onAction={() => setActiveTab('localpreneur')}
+                            />
+                            <PathwayStep 
+                                step="4" 
+                                title="Uji Coba & Tampilkan Produk di Neng Marketplace" 
+                                category="Achievement (Hasil)"
+                                desc="Pajang karya produkmu untuk mendapatkan umpan balik dari komunitas pengguna awal."
+                                actionText="Lihat Marketplace"
+                                onAction={() => setActiveTab('marketplace')}
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function PathwayStep({ step, title, category, desc, actionText, onAction }) {
+            return (
+                <div className="relative pl-12 space-y-2">
+                    <div className="absolute left-0 top-0 w-10 h-10 rounded-full bg-neng-600 text-white font-black text-sm flex items-center justify-center shadow-soft border-2 border-white">
+                        {step}
+                    </div>
+                    <div className="p-4 rounded-2xl bg-neng-softBg border border-neng-100 space-y-2 hover:border-neng-200 transition-all">
+                        <div className="flex items-center justify-between">
+                            <Badge variant="outline" className="text-[10px]">{category}</Badge>
+                            <span className="text-[10px] text-emerald-600 font-bold"><i className="fa-solid fa-circle-check"></i> Langkah {step}</span>
+                        </div>
+                        <h3 className="font-bold text-sm text-neng-darkText">{title}</h3>
+                        <p className="text-xs text-neng-subText leading-relaxed">{desc}</p>
+                        <button
+                            onClick={onAction}
+                            className="text-xs font-bold text-neng-600 hover:text-neng-700 flex items-center gap-1.5 pt-1"
+                        >
+                            <span>{actionText}</span>
+                            <i className="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 6. AI MATCHING MENTOR VIEW
+        function MentorView({ userProfile, onSelectMentor }) {
+            return (
+                <div className="space-y-6 animate-fade-in">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-2xl font-extrabold text-neng-darkText">Temukan Mentor</h1>
+                                <Badge variant="rose">Direct Guidance</Badge>
+                            </div>
+                            <p className="text-xs text-neng-subText">Terhubung dengan praktisi & pendamping perempuan berpengalaman di Indramayu.</p>
+                        </div>
+                    </div>
+
+                    {/* Top Mentor Match Banner */}
+                    <div className="bg-gradient-to-r from-neng-peach to-white p-5 rounded-3xl border border-neng-peachBorder flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-2xl bg-neng-600 text-white flex items-center justify-center text-xl shadow-soft">
+                                <i className="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-sm text-neng-darkText">Pencocokan Mentor Otomatis</h3>
+                                <p className="text-xs text-neng-subText">Diurutkan berdasarkan kesesuaian minat ({userProfile.interest || 'Kuliner'}) dan lokasi domisili.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Mentor List Grid */}
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {INITIAL_MENTORS.map(m => (
+                            <div key={m.id} className="bg-white rounded-3xl border border-neng-100 p-5 shadow-sm hover:shadow-soft transition-all space-y-4 flex flex-col justify-between">
+                                <div className="space-y-3">
+                                    <div className="flex justify-between items-start">
+                                        <div className="relative">
+                                            <img src={m.avatar} alt={m.name} className="w-16 h-16 rounded-2xl object-cover border-2 border-neng-200" />
+                                            <span className="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border border-white">
+                                                Aktif
+                                            </span>
+                                        </div>
+                                        <Badge variant="peach" className="font-bold">
+                                            <i className="fa-solid fa-heart text-neng-600 mr-1"></i> Match {m.matchPercentage}%
+                                        </Badge>
+                                    </div>
+
+                                    <div>
+                                        <h3 className="font-bold text-base text-neng-darkText">{m.name}</h3>
+                                        <p className="text-xs text-neng-600 font-semibold">{m.role}</p>
+                                        <p className="text-[11px] text-neng-subText"><i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>Kecamatan {m.district}</p>
+                                    </div>
+
+                                    <div className="p-3 rounded-2xl bg-neng-softBg border border-neng-100 text-[11px] text-neng-darkText space-y-1">
+                                        <span className="font-bold text-neng-700 block">Alasan Kesesuaian:</span>
+                                        <p className="text-neng-subText leading-tight">{m.matchReason}</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-1">
+                                        {m.focus.map(f => (
+                                            <span key={f} className="text-[10px] font-medium bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md">
+                                                {f}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="pt-3 border-t border-neng-100 flex gap-2">
+                                    <button
+                                        onClick={() => onSelectMentor(m)}
+                                        className="w-full py-2.5 rounded-xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm"
+                                    >
+                                        Ajukan Pendampingan
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 7. NENG ACADEMY VIEW
+        function AcademyView({ onSelectCourse }) {
+            const [selectedCategory, setSelectedCategory] = React.useState('Semua');
+
+            const categories = ['Semua', 'Digital Skills', 'Local Business', 'Entrepreneurship', 'Personal Development'];
+
+            const filteredCourses = INITIAL_COURSES.filter(c => selectedCategory === 'Semua' || c.category === selectedCategory);
+
+            return (
+                <div className="space-y-6 animate-fade-in">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-2xl font-extrabold text-neng-darkText">Neng Academy</h1>
+                            <Badge variant="rose">Keterampilan Praktis</Badge>
+                        </div>
+                        <p className="text-xs text-neng-subText">Modul belajar singkat yang dirancang khusus untuk pengembangan potensi perempuan muda Indramayu.</p>
+                    </div>
+
+                    {/* Category Filter Pills */}
+                    <div className="flex flex-wrap gap-2">
+                        {categories.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+                                    selectedCategory === cat 
+                                        ? 'bg-neng-600 text-white border-neng-600 shadow-sm' 
+                                        : 'bg-white text-neng-darkText border-neng-200 hover:bg-neng-50'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Course Cards Grid */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {filteredCourses.map(course => (
+                            <div key={course.id} className="bg-white rounded-3xl border border-neng-100 overflow-hidden shadow-sm hover:shadow-soft transition-all flex flex-col justify-between">
+                                <div className="space-y-3">
+                                    <div className="relative h-40 overflow-hidden bg-gray-100">
+                                        <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
+                                        <div className="absolute top-3 left-3">
+                                            <Badge variant="rose">{course.category}</Badge>
+                                        </div>
+                                        <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-[10px] px-2 py-1 rounded-md font-medium">
+                                            <i className="fa-solid fa-clock mr-1"></i>{course.duration}
+                                        </div>
+                                    </div>
+
+                                    <div className="p-5 space-y-3">
+                                        <h3 className="font-bold text-base text-neng-darkText line-clamp-1">{course.title}</h3>
+                                        <p className="text-xs text-neng-subText line-clamp-2">{course.description}</p>
+
+                                        <div className="text-xs text-neng-darkText space-y-1">
+                                            <p><span className="text-neng-subText">Mentor:</span> <strong>{course.mentor}</strong></p>
+                                            <p><span className="text-neng-subText">Jumlah Modul:</span> {course.lessonsCount} Video Singkat</p>
+                                        </div>
+
+                                        {/* Progress Bar */}
+                                        <div className="space-y-1 pt-1">
+                                            <div className="flex justify-between text-[11px] font-bold">
+                                                <span className="text-neng-subText">Progress Belajar</span>
+                                                <span className="text-neng-600">{course.progress}%</span>
+                                            </div>
+                                            <div className="w-full bg-neng-100 h-2 rounded-full overflow-hidden">
+                                                <div className="bg-neng-600 h-full rounded-full" style={{ width: `${course.progress}%` }}></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="p-5 pt-0">
+                                    <button
+                                        onClick={() => onSelectCourse(course)}
+                                        className="w-full py-2.5 rounded-xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm flex items-center justify-center gap-2"
+                                    >
+                                        <i className="fa-solid fa-play text-[10px]"></i>
+                                        <span>{course.progress > 0 ? 'Lanjutkan Belajar' : 'Mulai Belajar'}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 8. NENG LOCALPRENEUR (AI WOMENPRENEUR + LOCAL WISDOM)
+        function LocalpreneurView({ userProfile }) {
+            const [inputText, setInputText] = React.useState('Saya suka memasak dan berminat menjual makanan olahan buah khas Indramayu lewat medsos.');
+            const [generatedResult, setGeneratedResult] = React.useState(null);
+            const [isGenerating, setIsGenerating] = React.useState(false);
+
+            const handleGenerate = (e) => {
+                e.preventDefault();
+                setIsGenerating(true);
+                setTimeout(() => {
+                    setGeneratedResult({
+                        productName: 'Mango Artisan Snack Box Dermayu',
+                        targetMarket: 'Mahasiswa, Pekerja Muda & Wisatawan Indramayu',
+                        uniqueSellingPoint: 'Menggunakan Mangga Gedong Gincu segar tanpa pemanis buatan dengan kemasan ziplock ramah lingkungan.',
+                        brandingConcept: 'Visual modern minimalis dengan sentuhan aksen ornamen Batik Paoman pada label produk.',
+                        marketingStrategy: 'Penjualan via TikTok Live Commerce & pameran UMKM daerah Jatibarang.',
+                        requiredSkills: ['Foto Produk Pakai HP', 'Izin P-IRT Sederhana', 'Customer Service WA Business']
+                    });
+                    setIsGenerating(false);
+                }, 800);
+            };
+
+            return (
+                <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-2xl font-extrabold text-neng-darkText">Neng Localpreneur</h1>
+                            <Badge variant="peach"><i className="fa-solid fa-lightbulb mr-1"></i> AI Local Wisdom Generator</Badge>
+                        </div>
+                        <p className="text-xs text-neng-subText">Hubungkan potensi & hobi pribadimu dengan kekayaan lokal Indramayu untuk merancang ide produk inovatif.</p>
+                    </div>
+
+                    {/* Input Prompt Form */}
+                    <form onSubmit={handleGenerate} className="bg-white p-6 rounded-3xl border border-neng-100 shadow-sm space-y-4">
+                        <div>
+                            <label className="block text-xs font-bold text-neng-darkText mb-1.5">
+                                Ceritakan potensi, hobi, atau keterampilanmu:
+                            </label>
+                            <textarea
+                                rows="3"
+                                value={inputText}
+                                onChange={e => setInputText(e.target.value)}
+                                placeholder="Contoh: Saya suka menggambar dan tertarik dengan kerajinan tangan..."
+                                className="w-full p-4 rounded-2xl border border-neng-200 text-xs focus:outline-none focus:ring-2 focus:ring-neng-500 leading-relaxed"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isGenerating || !inputText}
+                            className="w-full py-3 rounded-2xl bg-gradient-to-r from-neng-600 to-neng-500 text-white font-bold text-xs hover:opacity-95 transition-all shadow-soft flex items-center justify-center gap-2 disabled:opacity-50"
+                        >
+                            {isGenerating ? (
+                                <>
+                                    <i className="fa-solid fa-spinner animate-spin"></i>
+                                    <span>Menganalisis Potensi Lokal Indramayu...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <i className="fa-solid fa-wand-magic-sparkles"></i>
+                                    <span>Kembangkan Ide Bisnis Lokal</span>
+                                </>
+                            )}
+                        </button>
+                    </form>
+
+                    {/* Generator Result Output Card */}
+                    {generatedResult && (
+                        <div className="bg-white p-6 rounded-3xl border border-neng-200 shadow-soft space-y-6 animate-fade-in">
+                            <div className="flex items-center justify-between border-b border-neng-100 pb-4">
+                                <Badge variant="green"><i className="fa-solid fa-circle-check mr-1"></i> Ide Bisnis Siap Dikembangkan</Badge>
+                                <span className="text-[10px] text-neng-subText">Prototype Simulation</span>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <span className="text-[10px] uppercase font-extrabold text-neng-600 tracking-wider">Rekomendasi Nama Produk</span>
+                                    <h2 className="text-xl font-black text-neng-darkText">{generatedResult.productName}</h2>
+                                </div>
+
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <ResultDetailBox title="Target Pasar Utama" content={generatedResult.targetMarket} icon="fa-bullseye" />
+                                    <ResultDetailBox title="Keunggulan Produk (USP)" content={generatedResult.uniqueSellingPoint} icon="fa-star" />
+                                    <ResultDetailBox title="Konsep Branding & Kemasan" content={generatedResult.brandingConcept} icon="fa-pen-nib" />
+                                    <ResultDetailBox title="Strategi Pemasaran" content={generatedResult.marketingStrategy} icon="fa-chart-line" />
+                                </div>
+
+                                <div className="p-4 rounded-2xl bg-neng-softBg border border-neng-100 space-y-2">
+                                    <h4 className="font-bold text-xs text-neng-darkText flex items-center gap-1.5">
+                                        <i className="fa-solid fa-graduation-cap text-neng-600"></i> Skill yang Perlu Dipelajari:
+                                    </h4>
+                                    <ul className="list-disc list-inside text-xs text-neng-subText space-y-1">
+                                        {generatedResult.requiredSkills.map(s => <li key={s}>{s}</li>)}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <button className="w-full py-3 rounded-2xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm">
+                                Kembangkan Ide Ini di Navigator
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function ResultDetailBox({ title, content, icon }) {
+            return (
+                <div className="p-3.5 rounded-2xl bg-neng-softBg border border-neng-100 space-y-1">
+                    <span className="text-[11px] font-bold text-neng-700 flex items-center gap-1.5">
+                        <i className={`fa-solid ${icon} text-neng-500`}></i> {title}
+                    </span>
+                    <p className="text-xs text-neng-darkText leading-relaxed">{content}</p>
+                </div>
+            );
+        }
+
+
+        // 9. NENG SAFE SPACE (NONJUDGMENTAL SUPPORT & CHATBOT)
+        function SafeSpaceView() {
+            const [chatMessages, setChatMessages] = React.useState([
+                {
+                    sender: 'bot',
+                    text: 'Halo Neng! Selamat datang di Neng Safe Space. Ini adalah ruang aman awal tanpa penghakiman. Apa yang bisa aku bantu hari ini?'
+                }
+            ]);
+            const [inputChat, setInputChat] = React.useState('');
+
+            const handleSendChat = (textToSend) => {
+                const messageText = textToSend || inputChat;
+                if (!messageText.trim()) return;
+
+                const newMessages = [...chatMessages, { sender: 'user', text: messageText }];
+                setChatMessages(newMessages);
+                if (!textToSend) setInputChat('');
+
+                // Simulated empathetic AI response
+                setTimeout(() => {
+                    let reply = "Terima kasih sudah mau bercerita. Kamu tidak harus menyelesaikan semuanya sendirian. Aku bisa membantumu menemukan informasi awal atau menghubungkanmu dengan pendamping sebaya yang ramah di Indramayu.";
+                    if (messageText.toLowerCase().includes('bingung') || messageText.toLowerCase().includes('cerita')) {
+                        reply = "Sangat wajar merasa bingung. Langkah pertamamu menghubungi kami sudah sangat berarti. Mau aku bantu rekomendasikan ruang konsultasi tatap muka tanpa biaya di Indramayu?";
+                    }
+                    setChatMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+                }, 600);
+            };
+
+            return (
+                <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-rose-50 to-neng-peach p-6 rounded-3xl border border-neng-200 text-center space-y-2">
+                        <div className="w-12 h-12 rounded-full bg-neng-600 text-white flex items-center justify-center text-xl mx-auto shadow-soft">
+                            <i className="fa-solid fa-heartPulse"></i>
+                        </div>
+                        <h1 className="text-2xl font-extrabold text-neng-darkText">Neng Safe Space</h1>
+                        <p className="text-xs text-neng-subText max-w-md mx-auto">
+                            Ruang awal untuk mencari informasi, arahan, dan dukungan tanpa stigma dan tanpa penghakiman.
+                        </p>
+                    </div>
+
+                    {/* Quick Topic Chips */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {[
+                            'Saya bingung cerita ke siapa',
+                            'Info pendampingan wanita',
+                            'Konsultasi minat usaha',
+                            'Saya butuh teman diskusi'
+                        ].map(topic => (
+                            <button
+                                key={topic}
+                                onClick={() => handleSendChat(topic)}
+                                className="p-2.5 rounded-2xl bg-white border border-neng-100 text-[11px] font-bold text-neng-darkText hover:border-neng-300 transition-all text-center shadow-sm"
+                            >
+                                {topic}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Chat Simulation Area */}
+                    <div className="bg-white rounded-3xl border border-neng-100 p-5 shadow-sm space-y-4">
+                        <div className="h-64 overflow-y-auto space-y-3 p-2">
+                            {chatMessages.map((m, idx) => (
+                                <div key={idx} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-xs md:max-w-md p-3.5 rounded-2xl text-xs leading-relaxed ${
+                                        m.sender === 'user' 
+                                            ? 'bg-neng-600 text-white rounded-br-none' 
+                                            : 'bg-neng-softBg text-neng-darkText border border-neng-100 rounded-bl-none'
+                                    }`}>
+                                        {m.text}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Input Box */}
+                        <div className="flex gap-2 pt-2 border-t border-neng-100">
+                            <input 
+                                type="text"
+                                placeholder="Ketik pesan atau pertanyaanmu di sini..."
+                                value={inputChat}
+                                onChange={e => setInputChat(e.target.value)}
+                                onKeyDown={e => e.key === 'Enter' && handleSendChat()}
+                                className="flex-1 px-4 py-2.5 rounded-2xl border border-neng-200 text-xs focus:outline-none focus:ring-2 focus:ring-neng-500"
+                            />
+                            <button
+                                onClick={() => handleSendChat()}
+                                className="px-5 py-2.5 rounded-2xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm"
+                            >
+                                Kirim
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Privacy & Medical Disclaimer */}
+                    <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 text-[11px] text-gray-500 space-y-1">
+                        <p className="font-bold text-gray-700"><i className="fa-solid fa-shield-halved mr-1"></i> Catatan Privasi & Layanan:</p>
+                        <p>
+                            Sahabat Neng bukan pengganti layanan medis atau psikis profesional. Untuk situasi khusus yang membutuhkan penanganan darurat, pengguna akan dirujuk secara pribadi kepada lembaga pendamping resmi di Indramayu. Data tersimpan rahasia dan opsional.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 10. NENG MARKETPLACE VIEW
+        function MarketplaceView({ showToast }) {
+            return (
+                <div className="space-y-6 animate-fade-in">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h1 className="text-2xl font-extrabold text-neng-darkText">Neng Marketplace</h1>
+                                <Badge variant="peach">Produk Karya Lokal</Badge>
+                            </div>
+                            <p className="text-xs text-neng-subText">Kembangkan produkmu dan dapatkan akses pasar bagi wirausaha perempuan Indramayu.</p>
+                        </div>
+                    </div>
+
+                    {/* Disclaimer Banner */}
+                    <div className="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex items-center gap-2">
+                        <i className="fa-solid fa-circle-info text-amber-600"></i>
+                        <span>Label Prototype: Produk yang ditampilkan adalah draf simulasi hasil program pemberdayaan.</span>
+                    </div>
+
+                    {/* Products Grid */}
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {INITIAL_PRODUCTS.map(p => (
+                            <div key={p.id} className="bg-white rounded-3xl border border-neng-100 overflow-hidden shadow-sm hover:shadow-soft transition-all space-y-3 flex flex-col justify-between">
+                                <div className="space-y-3">
+                                    <div className="relative h-44 overflow-hidden bg-gray-100">
+                                        <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                                        <div className="absolute top-3 left-3">
+                                            <Badge variant="rose">{p.badge}</Badge>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-4 space-y-2">
+                                        <span className="text-[10px] text-neng-subText uppercase font-bold"><i className="fa-solid fa-shop mr-1"></i>{p.seller}</span>
+                                        <h3 className="font-bold text-sm text-neng-darkText line-clamp-1">{p.title}</h3>
+                                        <p className="text-xs text-neng-subText line-clamp-2">{p.description}</p>
+                                        <p className="text-base font-extrabold text-neng-600">{p.price}</p>
+                                    </div>
+                                </div>
+
+                                <div className="p-4 pt-0">
+                                    <button
+                                        onClick={() => showToast(`Tertarik dengan ${p.title}? Fitur kontak penjual telah dihubungkan!`)}
+                                        className="w-full py-2.5 rounded-xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm"
+                                    >
+                                        Dukung / Beli Produk
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // 11. USER PROFILE VIEW
+        function ProfileView({ userProfile, setUserProfile, setActiveTab }) {
+            const savedItems = INITIAL_GEOMAP_RESOURCES.filter(r => userProfile.savedResources?.includes(r.id));
+
+            return (
+                <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
+                    {/* User Profile Card */}
+                    <div className="bg-white rounded-3xl p-6 border border-neng-100 shadow-sm space-y-6">
+                        <div className="flex items-center gap-4 border-b border-neng-100 pb-6">
+                            <div className="w-16 h-16 rounded-3xl bg-neng-200 flex items-center justify-center text-neng-700 text-2xl font-extrabold border-2 border-neng-300">
+                                {userProfile.name ? userProfile.name.charAt(0) : 'N'}
+                            </div>
+                            <div>
+                                <h2 className="text-xl font-bold text-neng-darkText">{userProfile.name || 'Neng Aulia'}</h2>
+                                <p className="text-xs text-neng-subText">
+                                    <i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>
+                                    Kecamatan {userProfile.district || 'Indramayu'} &bull; {userProfile.age || '20'} Tahun
+                                </p>
+                                <Badge variant="peach" className="mt-1">Pendidikan: {userProfile.education || 'SMK'}</Badge>
+                            </div>
+                        </div>
+
+                        {/* Profile Summary Grid */}
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                            <div className="p-3.5 rounded-2xl bg-neng-softBg border border-neng-100">
+                                <span className="text-[10px] text-neng-subText font-bold uppercase block">Minat Utama</span>
+                                <span className="font-bold text-neng-darkText">{userProfile.interest}</span>
+                            </div>
+                            <div className="p-3.5 rounded-2xl bg-neng-softBg border border-neng-100">
+                                <span className="text-[10px] text-neng-subText font-bold uppercase block">Potensi Diberdayakan</span>
+                                <span className="font-bold text-neng-darkText">{userProfile.potentialGoal}</span>
+                            </div>
+                        </div>
+
+                        {/* Edit Needs Assessment Button */}
+                        <button
+                            onClick={() => setActiveTab('onboarding')}
+                            className="w-full py-2.5 rounded-xl border border-neng-200 text-neng-700 font-bold text-xs hover:bg-neng-50 transition-all flex items-center justify-center gap-2"
+                        >
+                            <i className="fa-solid fa-pen-to-square"></i>
+                            <span>Perbarui Asesmen Kebutuhan Diri</span>
+                        </button>
+                    </div>
+
+                    {/* Saved Resources Section */}
+                    <div className="bg-white rounded-3xl p-6 border border-neng-100 shadow-sm space-y-4">
+                        <h3 className="font-bold text-base text-neng-darkText flex items-center gap-2">
+                            <i className="fa-solid fa-bookmark text-neng-600"></i> Sumber Daya Tersimpan ({savedItems.length})
+                        </h3>
+
+                        {savedItems.length === 0 ? (
+                            <p className="text-xs text-neng-subText italic">Belum ada sumber daya yang disimpan dari GeoMap.</p>
+                        ) : (
+                            <div className="space-y-3">
+                                {savedItems.map(item => (
+                                    <div key={item.id} className="p-3.5 rounded-2xl bg-neng-softBg border border-neng-100 flex items-center justify-between">
+                                        <div>
+                                            <Badge variant="rose" className="text-[9px] mb-1">{item.category}</Badge>
+                                            <h4 className="font-bold text-xs text-neng-darkText">{item.title}</h4>
+                                            <p className="text-[10px] text-neng-subText">{item.district}</p>
+                                        </div>
+                                        <button 
+                                            onClick={() => setActiveTab('geomap')}
+                                            className="text-xs font-bold text-neng-600 hover:underline"
+                                        >
+                                            Buka Peta
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // MODAL COMPONENTS
+        function ResourceDetailModal({ resource, isSaved, onClose, onToggleSave, onNavigate }) {
+            return (
+                <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+                    <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-5 border border-neng-100 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <Badge variant="rose">{resource.category}</Badge>
+                                <span className="text-xs text-neng-subText"><i className="fa-solid fa-location-dot text-neng-500 mr-1"></i>{resource.district}</span>
+                            </div>
+                            <h2 className="text-lg font-bold text-neng-darkText">{resource.title}</h2>
+                        </div>
+
+                        <div className="space-y-3 text-xs text-neng-darkText">
+                            <div className="p-3 rounded-2xl bg-neng-softBg border border-neng-100 space-y-1">
+                                <span className="font-bold text-neng-700 block">Deskripsi Kegiatan/Layanan:</span>
+                                <p className="text-neng-subText leading-relaxed">{resource.description}</p>
+                            </div>
+
+                            <div>
+                                <span className="font-bold text-neng-darkText block mb-0.5">Alamat / Lokasi:</span>
+                                <p className="text-neng-subText">{resource.address}</p>
+                            </div>
+
+                            <div>
+                                <span className="font-bold text-neng-darkText block mb-0.5">Persyaratan Pengguna:</span>
+                                <p className="text-neng-subText">{resource.prerequisites}</p>
+                            </div>
+
+                            <div>
+                                <span className="font-bold text-neng-darkText block mb-0.5">Kontak Informasi:</span>
+                                <p className="text-neng-600 font-bold">{resource.contact}</p>
+                            </div>
+                        </div>
+
+                        <div className="pt-3 border-t border-neng-100 flex gap-3">
+                            <button
+                                onClick={onToggleSave}
+                                className={`w-1/2 py-2.5 rounded-xl font-bold text-xs border transition-all ${
+                                    isSaved ? 'bg-neng-100 text-neng-700 border-neng-300' : 'bg-white text-neng-700 border-neng-200 hover:bg-neng-50'
+                                }`}
+                            >
+                                <i className={`fa-${isSaved ? 'solid' : 'regular'} fa-bookmark mr-1.5`}></i>
+                                {isSaved ? 'Tersimpan' : 'Simpan'}
+                            </button>
+
+                            <button
+                                onClick={onNavigate}
+                                className="w-1/2 py-2.5 rounded-xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-sm"
+                            >
+                                Lihat Rekomendasi Jalur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function MentorDetailModal({ mentor, onClose, showToast }) {
+            return (
+                <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+                    <div className="bg-white rounded-3xl max-w-md w-full p-6 space-y-5 border border-neng-100 shadow-2xl relative">
+                        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <div className="flex items-center gap-4">
+                            <img src={mentor.avatar} alt={mentor.name} className="w-16 h-16 rounded-2xl object-cover border-2 border-neng-200" />
+                            <div>
+                                <h2 className="font-bold text-base text-neng-darkText">{mentor.name}</h2>
+                                <p className="text-xs text-neng-600 font-semibold">{mentor.role}</p>
+                                <Badge variant="peach" className="mt-1">Kecamatan {mentor.district}</Badge>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 text-xs text-neng-darkText">
+                            <p className="text-neng-subText italic">&ldquo;{mentor.bio}&rdquo;</p>
+
+                            <div className="p-3 rounded-2xl bg-neng-softBg border border-neng-100 space-y-1">
+                                <span className="font-bold text-neng-700 block">Jadwal Sesi Pendampingan:</span>
+                                <p className="text-neng-darkText">{mentor.availableTime}</p>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                onClose();
+                                showToast(`✨ Pengajuan pendampingan ke ${mentor.name} berhasil terkirim!`);
+                            }}
+                            className="w-full py-3 rounded-2xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-soft"
+                        >
+                            Konfirmasi Ajukan Pendampingan
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        function CourseDetailModal({ course, onClose, showToast }) {
+            return (
+                <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
+                    <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-5 border border-neng-100 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                        <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200">
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+
+                        <div className="space-y-2">
+                            <Badge variant="rose">{course.category}</Badge>
+                            <h2 className="text-lg font-bold text-neng-darkText">{course.title}</h2>
+                            <p className="text-xs text-neng-subText">{course.description}</p>
+                        </div>
+
+                        <div className="space-y-2 border-t border-neng-100 pt-3">
+                            <h4 className="font-bold text-xs text-neng-darkText">Daftar Modul Pembelajaran:</h4>
+                            <div className="space-y-2">
+                                {course.lessons.map((les, idx) => (
+                                    <div key={idx} className="p-3 rounded-xl bg-neng-softBg border border-neng-100 flex items-center justify-between text-xs">
+                                        <div className="flex items-center gap-2">
+                                            <span className="w-5 h-5 rounded-full bg-neng-200 text-neng-700 flex items-center justify-center text-[10px] font-bold">
+                                                {idx + 1}
+                                            </span>
+                                            <span className="font-semibold text-neng-darkText">{les}</span>
+                                        </div>
+                                        <i className="fa-solid fa-circle-play text-neng-500"></i>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => {
+                                onClose();
+                                showToast(`🚀 Selamat belajar modul "${course.title}"!`);
+                            }}
+                            className="w-full py-3 rounded-2xl bg-neng-600 text-white font-bold text-xs hover:bg-neng-700 transition-all shadow-soft"
+                        >
+                            Mulai Tonton Video Pertama
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<App />);
+    </script>
+</body>
+</html>
